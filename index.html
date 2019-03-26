@@ -29,8 +29,8 @@
       <div class="card-body">
         <form>
           <div class="form-group col-md-12">
-            <label for="inputEmail4">Search Term:</label>
-            <input type="email" class="form-control" id="inputEmail4" placeholder="Article, news, etc.">
+            <label for="search">Search Term:</label>
+            <input type="email" class="form-control" id="search-term" placeholder="Article, news, etc.">
           </div>
 
           <div class="form-group col-md-12">
@@ -95,7 +95,7 @@
 
     $("#search-button").on("click", function () {
 
-      var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + key + "&q=" + search;
+      $("#search-results").empty();
 
       if (startYear != "") {
         queryURL += "&begin_date=" + startYear;
@@ -104,6 +104,11 @@
       if (endYear != "") {
         queryURL += "&end_date=" + endYear;
       }
+
+      search = $("#search-term").val().trim();
+      console.log("search: " + search);
+
+      var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + key + "&q=" + search;
 
       $.ajax({
         url: queryURL,

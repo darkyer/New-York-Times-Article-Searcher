@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="boton"> get info</button>
+  <div id="content"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+
+    var numberRecords = 10;
+
+    var key = "ZmAKRBOpJjmJXg4M3FEUCIAUOt0A1j9m";
+
+    var search = "hillary";
+
+    var startYear = "";
+
+    var endYear = "";
+
+
+    $("#boton").on("click", function () {
+
+      var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + key + "&q=" + search;
+
+      if (startYear != "") {
+        queryURL += "&begin_date=" + startYear;
+      }
+
+      if (endYear != "") {
+        queryURL += "&end_date=" + endYear;
+      }
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function (response) {
+
+        var data = response.response.docs;
+        console.log(response);
+
+        for (let index = 0; index < numberRecords; index++) {
+
+          var newDiv = $("<div>");
+          var number = $("<span>");
+          var header = $("<h1>");
+          var by = $("<h4>");
+
+          var separator = $("<hr>");
+
+          number.text(index + 1);
+          header.text(data[index].headline.main);
+          by.text(data[index].byline.original);
+
+          newDiv.append(number);
+          newDiv.append(header);
+          newDiv.append(by);
+          newDiv.append(separator);
+
+          $("#content").append(newDiv);
+        }
+
+      });
+
+    });
+
+  </script>
+</body>
+
+</html>
